@@ -1,4 +1,4 @@
-package handler
+package main
 
 import (
 	"bytes"
@@ -6,7 +6,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"run/util"
 	"strings"
 )
 
@@ -32,12 +31,12 @@ func start(w http.ResponseWriter, r *http.Request) {
 	}
 	//log.Println("request body: ", body)
 
-	if err = util.WriteToFile(string(body)); err != nil {
+	if err = WriteToFile(string(body)); err != nil {
 		log.Println(err)
 		return
 	}
 
-	res, err := util.Timeout(util.RunGo)
+	res, err := Timeout(RunGo)
 	//res, err := util.RunGo()
 	if err != nil {
 		log.Println(err)
