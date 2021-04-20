@@ -15,7 +15,7 @@ func init() {
 // 20896  ___go_build_ 94.8      00:30.92 11/1   0     21     911M+  0B     386M   20896 9328
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/go", GoWithText())
+	mux.HandleFunc("/go", GoHandler())
 
 	// pprof
 	mux.HandleFunc("/debug/pprof/", pprof.Index)

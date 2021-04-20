@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/json"
+	"io"
+	"log"
 	"math/rand"
 	"strconv"
 	"time"
@@ -14,22 +17,22 @@ type User struct {
 }
 
 type Code struct {
-	Type    string
-	Content string
+	Type    string `json:"type"`
+	Content string `json:"content"`
 }
 
-func NewUser(codeType, codeContent string) *User {
+func NewUser(code Code) *User {
 	rand.Seed(time.Now().UnixNano())
 	userId := strconv.Itoa(rand.Intn(10000))
-
-	filename := codeType + userId
+	filename := userId
+	switch code.Type {
+	case TypeGO:
+		filename += SuffixGo
+	}
 
 	return &User{
 		Filename: filename,
-		Code: Code{
-			Type:    codeType,
-			Content: codeContent,
-		},
+		Code:     code,
 	}
 }
 
@@ -45,4 +48,20 @@ func (u Users) Add(ip IP, user *User) {
 
 func (u Users) Delete(ip string) {
 	delete(u, ip)
+}
+
+func (u Users) RegisterUser(addr string, reqBody io.ReadCloser) (*User, error) {
+	body, err := io.ReadAll(reqBody)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	var code Code
+	if err := json.Unmarshal(body, &code); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	us := NewUser(code)
+	u.Add(addr, us)
+	return us, nil
 }
