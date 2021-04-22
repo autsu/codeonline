@@ -1,24 +1,31 @@
 package main
 
-// 代码类型
+// source code type
 const (
 	TypeGO   = "go"
 	TypeJava = "java"
 )
 
 const (
-	// SourceFilePath 所有源代码文件都保存在对应容器下的 code/ 目录中
+	// SourceFilePath all source code files are stored in the "/code/" under the corresponding container
 	SourceFilePath = "/code/"
-	// TempFilePath 用于存放零时文件，在 cp 到容器以后会被 rm
-	//TempFilePath = "/root/"
-	TempFilePath = "/Users/zz/GolandProjects/tools/codeonline/code/"
+
+	// TempFilePath store the temp file, when copy to container finish, this file will be remove
+	TempFilePath = "/root/"
+	//TempFilePath = "/Users/xx/GolandProjects/tools/codeonline/"
 )
 
 // 容器名
 const (
-	//ContainerGo   = "gocode11"
-	ContainerGo   = "gotest" // 开发下的测试
+	ContainerGo = "gocode11"
+	// ContainerGo   = "gotest" // development environment test
 	ContainerJava = "javacode11"
+)
+
+// 镜像名
+const (
+	ImageGo   = "golang"
+	ImageJava = "java"
 )
 
 // 后缀名

@@ -12,7 +12,7 @@ import (
 func DockerCP(user *User) error {
 	switch user.Type {
 	case TypeGO:
-		//  docker cp /Users/abc/GolandProjects/tools/codeonline/code/1234.go gotest:code/
+		// docker cp /Users/abc/GolandProjects/tools/codeonline/code/1234.go gotest:code/
 		c := "docker cp " + TempFilePath + user.Filename + " " + ContainerGo + ":" + SourceFilePath
 		cmd := exec.Command("bash", "-c", c)
 		log.Println("docker cp command: ", cmd)
@@ -24,13 +24,21 @@ func DockerCP(user *User) error {
 	return nil
 }
 
-func DockerRun() {
-	exec.Command("docker", "run", "")
+func DockerRun(user *User) {
+	var c string
+	switch user.Type {
+	case TypeGO:
+		// docker run -i --name gocode11 golang
+		c = "docker run -i --name " + ContainerGo + " " + ImageGo
+	}
+	log.Println("docker run: ", c)
+	cmd := exec.Command("bash", "-c", c)
+	output, _ := cmd.CombinedOutput()
+	log.Println(string(output))
 }
 
-// DockerExecAndRunCode 进入容器内部并执行源文件
-// usage: 先 exec 进入容器，再在容器中执行命令
-// docker exec -it gocode11 sh -c " ls -l && go run test.go"
+// DockerExecAndRunCode exec container and execution this user's code, and return the result
+// Example: docker exec -it gocode11 sh -c " ls -l && go run test.go"
 func DockerExecAndRunCode(user *User) []byte {
 	switch user.Type {
 	case TypeGO:
@@ -41,10 +49,10 @@ func DockerExecAndRunCode(user *User) []byte {
 		output, _ := com.CombinedOutput()
 		return output
 	}
-	return []byte("未知/不支持的语言")
+	return []byte("unknown/not support language")
 }
 
-// DockerExecAndRemoveFile 删除容器内部的代码文件
+// DockerExecAndRemoveFile exec container, and then remove this user's code file
 func DockerExecAndRemoveFile(user *User) error {
 	switch user.Type {
 	case TypeGO:
@@ -58,4 +66,31 @@ func DockerExecAndRemoveFile(user *User) error {
 		}
 	}
 	return nil
+}
+
+// DockerExecAndCreateDir exec container and create dir "code" in root path "/"
+// the user code is store in here
+func DockerExecAndCreateDir(user *User) {
+	var c string
+	switch user.Type {
+	case TypeGO:
+		c = "docker exec -i" + ContainerGo + ` sh -c "cd .. && mkdir code"`
+	}
+	log.Println("docker exec and create: ", c)
+	cmd := exec.Command("bash", "-c", c)
+	output, _ := cmd.CombinedOutput()
+	log.Println(string(output))
+}
+
+// DockerRM	remove the container according to the code type
+func DockerRM(user *User) {
+	var c string
+	switch user.Type {
+	case TypeGO:
+		c = "docker rm -f " + ContainerGo
+	}
+	log.Println("docker rm: ", c)
+	cmd := exec.Command("bash", "-c", c)
+	output, _ := cmd.CombinedOutput()
+	log.Println(string(output))
 }

@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
 	"testing"
@@ -44,20 +42,4 @@ func TestRand(t *testing.T) {
 		m[intn] = struct{}{}
 	}
 	fmt.Println("重复次数：", count)
-}
-
-func TestRecJson(t *testing.T) {
-	js := `
-{
-	"type": "go",
-"content": "package main\n import (\n \"fmt\" \n) \n func main() {\n fmt.Println(\"test\") \n } \n "
-}
-`
-	//log.Println(js)
-	var code Code
-	if err := json.Unmarshal([]byte(js), &code); err != nil {
-		log.Fatal(err)
-	}
-	log.Println(code.Type)
-	log.Println(code.Content)
 }

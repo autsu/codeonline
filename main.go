@@ -13,6 +13,8 @@ func init() {
 
 // 20911  xxx          97.7      00:31.47 5/1    0     14     872K   0B     632K   20896 1
 // 20896  ___go_build_ 94.8      00:30.92 11/1   0     21     911M+  0B     386M   20896 9328
+
+// build: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main *.go
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/go", GoHandler())

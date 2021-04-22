@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -18,9 +17,7 @@ func GoHandler() Hand {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//io.Copy(w, strings.NewReader("connect success\n"))
 		log.Printf("[go] a client[%v][%v] in...\n", r.RemoteAddr, r.Method)
-		//log.Printf("client send body: ")
-		//io.Copy(os.Stdout, r.Body)
-		fmt.Println()
+
 		if err := start(w, r); err != nil {
 			io.Copy(w, strings.NewReader(err.Error()))
 			return

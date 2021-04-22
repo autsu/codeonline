@@ -8,12 +8,11 @@ import (
 
 var (
 	// Go = /root/code_online/code/xxx.go
-	// Go = /Users/zz/GolandProjects/tools/codeonline/code/xxx.go
+	// Go = /Users/xx/GolandProjects/tools/codeonline/code/xxx.go
 	Go = "/code/xxx.go"
 )
 
 func WriteToTempFile(user *User) error {
-	// TODO 文件加随机数，区分不同用户
 	file, err := os.OpenFile(TempFilePath+user.Filename,
 		os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {

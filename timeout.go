@@ -12,10 +12,15 @@ const timeout = time.Second * 6
 type RunFunc = func(*User) []byte
 
 func Timeout(user *User, f RunFunc) (result []byte, err error) {
-	done := make(chan struct{})
+	// 这里需要将缓存设置为 1，如果为无缓存 chan，会导致当 Timeout 函数退出时，
+	// 所有请求阻塞在 done <- struct{}{}（因为此时 done 已经不存在了，没有接受者），
+	// 从而导致 goroutine 无法释放
+	done := make(chan struct{}, 1)
+	defer close(done)
 
 	go func() {
 		// 如果 f() 是死循环，会导致 goroutine 泄漏
+		// 还没有找到好的方法解决该问题
 		res := f(user)
 		log.Println("执行完成")
 		done <- struct{}{}
