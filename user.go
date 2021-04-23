@@ -12,7 +12,9 @@ import (
 type IP = string
 
 type User struct {
-	Filename string
+	Id            string
+	Filename      string
+	ContainerName string
 	Code
 }
 
@@ -29,10 +31,10 @@ func NewUser(code Code) *User {
 	case TypeGO:
 		filename += SuffixGo
 	}
-
 	return &User{
-		Filename: filename,
+		Id:       userId,
 		Code:     code,
+		Filename: filename,
 	}
 }
 
@@ -50,18 +52,18 @@ func (u Users) Delete(ip string) {
 	delete(u, ip)
 }
 
-func (u Users) RegisterUser(addr string, reqBody io.ReadCloser) (*User, error) {
+func (u Users) RegisterUser(addr string, reqBody io.ReadCloser) error {
 	body, err := io.ReadAll(reqBody)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return err
 	}
 	var code Code
 	if err := json.Unmarshal(body, &code); err != nil {
 		log.Println(err)
-		return nil, err
+		return err
 	}
 	us := NewUser(code)
 	u.Add(addr, us)
-	return us, nil
+	return nil
 }

@@ -1,1 +1,0 @@
-docker exec -i gotest sh -c "cd .. && go run test.go"

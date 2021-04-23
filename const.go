@@ -12,14 +12,7 @@ const (
 
 	// TempFilePath store the temp file, when copy to container finish, this file will be remove
 	TempFilePath = "/root/"
-	//TempFilePath = "/Users/xx/GolandProjects/tools/codeonline/"
-)
-
-// 容器名
-const (
-	ContainerGo = "gocode11"
-	// ContainerGo   = "gotest" // development environment test
-	ContainerJava = "javacode11"
+	//TempFilePath = "/Users/zz/GolandProjects/tools/codeonline/"
 )
 
 // 镜像名
