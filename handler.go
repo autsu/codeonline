@@ -13,8 +13,14 @@ var us = NewUsers()
 
 type Hand func(w http.ResponseWriter, r *http.Request)
 
-func GoHandler() Hand {
+func CodeHandler() Hand {
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE") //允许请求方法
+		// header 的类型
+		w.Header().Add("Access-Control-Allow-Headers", "Content-Type,AccessToken,X-CSRF-Token, Authorization, Token")
+
+
 		//io.Copy(w, strings.NewReader("connect success\n"))
 		log.Printf("[go] a client[%v][%v] in...\n", r.RemoteAddr, r.Method)
 

@@ -17,7 +17,7 @@ func init() {
 // build: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main *.go
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/go", GoHandler())
+	mux.HandleFunc("/", CodeHandler())
 
 	// pprof
 	mux.HandleFunc("/debug/pprof/", pprof.Index)

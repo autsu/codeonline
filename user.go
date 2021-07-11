@@ -12,9 +12,18 @@ import (
 type IP = string
 
 type User struct {
-	Id            string
-	Filename      string
+	Id string
+
+	// Filename 随机文件名保证一个用户的容器下可以存放多个代码文件
+	// TODO 在新的 timeout 解决策略下（具体参加 timeout.go 注释），
+	// 文件名似乎没有什么意义了，这个字段在未来可能会删除
+	Filename string
+
+	// ContainerName 是容器名，在 DockerRun 中为该字段赋值，
+	// 当执行 docker run 创建容器时，会使用该名称来命名
 	ContainerName string
+
+	// 用户的执行代码
 	Code
 }
 
@@ -30,6 +39,9 @@ func NewUser(code Code) *User {
 	switch code.Type {
 	case TypeGO:
 		filename += SuffixGo
+	case TypeJava:
+		// 这里暂时写死，因为 java 编译需要保证类名和文件名相同
+		filename = "test" + SuffixJava
 	}
 	return &User{
 		Id:       userId,
@@ -38,6 +50,7 @@ func NewUser(code Code) *User {
 	}
 }
 
+// Users 暂时没什么用
 type Users map[IP]*User
 
 func NewUsers() Users {

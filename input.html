@@ -6,8 +6,13 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-<form action="">
-    <textarea rows="20" cols="63" id="code">
+<select id="codeType">
+    <option value ="Go">Go</option>
+    <option value ="Java">Java</option>
+    <option value="C">C</option>
+    <option value="C++">C++</option>
+</select><br>
+<textarea rows="20" cols="63" id="code">
 package main
 
 import (
@@ -17,9 +22,9 @@ import (
 func main() {
     fmt.Println("Hello, World!")
 }
-    </textarea>
-    <input type="submit" value="运行" onclick="getCode()">
-</form>
+</textarea>
+
+<input type="submit" value="运行" onclick="send()">
 
 <br>
 <textarea rows="10" cols="63" id="result"></textarea>
@@ -29,11 +34,33 @@ func main() {
     let getCode = function() {
         let code = document.getElementById('code').innerHTML
         //alert(code)
+        return code
     }
 
     let send = function() {
-        axios({
+        // 代码
+        // 这里需要使用 value 而不是 innerHTML，使用 innerHTML 会导致
+        // 无法获取到页面中输入的值
+        let code = document.getElementById('code').value
 
+        // 获取代码类型
+        let codeType = document.getElementById('codeType')
+        let index = codeType.selectedIndex
+        let type = codeType.options[index].value
+
+        console.log('code: ' + code)
+        console.log('type: ' + type)
+
+        let addr = 'http://localhost:7776/'
+
+        axios.post(addr, {
+            "type": type,
+            "content": code
+        })
+        .then(resp => {
+            let r = document.getElementById('result')
+            console.log(resp);
+            r.value = resp.data
         })
     }
 

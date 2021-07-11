@@ -20,6 +20,10 @@ func Timeout(user *User, f RunFunc) (result []byte, err error) {
 	go func() {
 		// 如果 f() 是死循环，会导致 goroutine 泄漏
 		// 还没有找到好的方法解决该问题
+		//
+		// 解决方法：每次运行代码都会创建一个容器，执行完成或者超时
+		// 则将该容器强制删除即可，进程结束泄露的 goroutine 自然
+		// 也一起结束了
 		res, _ := f(user)
 		log.Println("执行完成")
 		done <- struct{}{}

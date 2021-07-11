@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os/exec"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -18,6 +19,10 @@ func DockerCP(user *User) error {
 	case TypeGO:
 		// docker cp /Users/abc/GolandProjects/tools/codeonline/code/1234.go gotest:code/
 		c = "docker cp " + TempFilePath + user.Filename + " " + user.ContainerName + ":" + SourceFilePath
+	case TypeJava:
+		c = "docker cp " + TempFilePath + user.Filename + " " + user.ContainerName + ":" + SourceFilePath
+	default:
+		return errors.New("unknown code type")
 	}
 	_, err := dockerExec(user, c)
 	if err != nil {
@@ -36,6 +41,10 @@ func DockerRun(user *User) error {
 	case TypeGO:
 		// docker run -d -it --name gocode11 golang
 		c = "docker run -d -it --name " + containerName + " " + ImageGo
+	case TypeJava:
+		c = "docker run -d -it --name " + containerName + " " + ImageJava
+	default:
+		return errors.New("unknown code type")
 	}
 	dockerExec(user, c)
 	return nil
@@ -49,6 +58,15 @@ func DockerExecAndRunCode(user *User) ([]byte, error) {
 	case TypeGO:
 		// docker exec -i gotest sh -c "go run 1420.go"
 		c = "docker exec -i " + user.ContainerName + ` sh -c "cd ../code && ` + "go run " + user.Filename + `"`
+	case TypeJava:
+		// java 需要先 javac xxx.java 编译出 class 文件，再使用 java xxx（不要后缀名）获得运行结果
+		index := strings.Index(user.Filename, ".")
+		// 去除 .class 后缀名
+		noSuffix := user.Filename[:index]
+		c = "docker exec -i " + user.ContainerName +
+			` sh -c "cd ../code && ` + "javac " + user.Filename + " && " + "java " + noSuffix + `"`
+	default:
+		return nil, errors.New("unknown code type")
 	}
 	res, err := dockerExec(user, c)
 	if err != nil {
@@ -64,6 +82,8 @@ func DockerExecAndRemoveFile(user *User) error {
 	case TypeGO:
 		// docker exec and rm command:  docker exec -i gotest sh -c "cd ../code && rm 214.go"
 		c = "docker exec -i " + user.ContainerName + ` sh -c "cd ../code && ` + "rm " + user.Filename + `"`
+	default:
+		return errors.New("unknown code type")
 	}
 	_, err := dockerExec(user, c)
 	if err != nil {
@@ -79,6 +99,10 @@ func DockerExecAndCreateDir(user *User) error {
 	switch user.Type {
 	case TypeGO:
 		c = "docker exec -i " + user.ContainerName + ` sh -c "cd .. && mkdir code"`
+	case TypeJava:
+		c = "docker exec -i " + user.ContainerName + ` sh -c "cd .. && mkdir code"`
+	default:
+		return errors.New("unknown code type")
 	}
 	_, err := dockerExec(user, c)
 	if err != nil {
@@ -93,6 +117,10 @@ func DockerRM(user *User) error {
 	switch user.Type {
 	case TypeGO:
 		c = "docker rm -f " + user.ContainerName
+	case TypeJava:
+		c = "docker rm -f " + user.ContainerName
+	default:
+		return errors.New("unknown code type")
 	}
 	_, err := dockerExec(user, c)
 	if err != nil {

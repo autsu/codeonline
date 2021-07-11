@@ -2,8 +2,8 @@ package main
 
 // source code type
 const (
-	TypeGO   = "go"
-	TypeJava = "java"
+	TypeGO   = "Go"
+	TypeJava = "Java"
 )
 
 const (
@@ -11,8 +11,9 @@ const (
 	SourceFilePath = "/code/"
 
 	// TempFilePath store the temp file, when copy to container finish, this file will be remove
-	TempFilePath = "/root/"
-	//TempFilePath = "/Users/zz/GolandProjects/tools/codeonline/"
+	//TempFilePath = "/root/"
+
+	TempFilePath = "/Users/zz/GolandProjects/tools/codeonline/" // 本机测试
 )
 
 // 镜像名
