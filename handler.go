@@ -51,11 +51,6 @@ func CodeHandler() Hand {
 // read, write and run
 func start(w http.ResponseWriter, r *http.Request) error {
 	addr := r.RemoteAddr
-	// 1. 注册用户
-	//if err := us.RegisterUser(addr, r.Body); err != nil {
-	//	return err
-	//}
-	//user := us[addr]
 
 	// 1. 注册用户
 	code, err := NewCode(r.Body)
