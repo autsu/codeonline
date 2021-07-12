@@ -23,7 +23,7 @@ func WriteToTempFile(user *User) error {
 	}
 	defer file.Close()
 
-	_, err = file.WriteString(user.Content)
+	_, err = file.WriteString(user.Code.Content)
 	if err != nil {
 		log.Println("write to temp file error: ", err)
 		return err

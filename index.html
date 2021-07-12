@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<select id="codeType" onchange="selectFunc(this)">
+    <option value ="Go">Go</option>
+    <option value ="Java">Java</option>
+    <option value="C">C</option>
+    <option value="C++">C++</option>
+</select><br>
+<textarea rows="20" cols="63" id="code">
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    fmt.Println("Hello, World!")
+}
+</textarea>
+
+<input type="submit" value="运行" onclick="send()">
+
+<br>
+<textarea rows="10" cols="63" id="result"></textarea>
+
+
+<script type="text/javascript">
+    // 获取语言的默认代码
+    let defaultCode = function(codeType) {
+        let go = `
+package main
+
+import (
+    "fmt"
+)
+
+    func main() {
+        fmt.Println("Hello, World!")
+    }
+`
+
+        let java = `
+// 请不要更改类名
+public class Test {
+    public static void main(String[] args) {
+        System.out.println("hello, world!");
+    }
+}
+        `
+
+        let c = `
+#include <stdio.h>
+
+int main() {
+    printf("hello, world!");
+}
+        `
+
+        let cc = `
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    cout << "hello, world!" << endl;
+}
+        `
+
+
+        if (codeType == 'Go') {
+            return go
+        } else if (codeType == 'Java') {
+            return java
+        } else if (codeType == 'C') {
+            return c
+        } else if (codeType == 'C++') {
+            return cc
+        }
+    }
+
+    // select 的触发事件
+    let selectFunc = function (obj) {
+        //代表的是选中项的index索引
+        let index = obj.selectedIndex;
+        //代表的是选中项的的值
+        let codeType = obj.options[index].value;
+        let code = defaultCode(codeType)
+        //console.log("default code: ", code)
+
+        let input = document.getElementById('code')
+        input.value = code
+    }
+
+    // 发送 ajax
+    let send = function() {
+        // 代码
+        // 这里需要使用 value 而不是 innerHTML，使用 innerHTML 会导致
+        // 无法获取到页面中输入的值
+        let code = document.getElementById('code').value
+
+        // 获取代码类型
+        let codeType = document.getElementById('codeType')
+        let index = codeType.selectedIndex
+        let type = codeType.options[index].value
+
+        //console.log('code: ' + code)
+        //console.log('type: ' + type)
+
+        let addr = 'http://localhost:7776/'
+
+        axios.post(addr, {
+            "type": type,
+            "content": code
+        })
+        .then(resp => {
+            let r = document.getElementById('result')
+            //console.log(resp);
+            r.value = resp.data
+        })
+    }
+
+</script>
+</body>
+
+</html>

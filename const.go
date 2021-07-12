@@ -4,6 +4,8 @@ package main
 const (
 	TypeGO   = "Go"
 	TypeJava = "Java"
+	TypeC    = "C"
+	TypeCPP  = "C++"
 )
 
 const (
@@ -11,19 +13,23 @@ const (
 	SourceFilePath = "/code/"
 
 	// TempFilePath store the temp file, when copy to container finish, this file will be remove
-	//TempFilePath = "/root/"
 
-	TempFilePath = "/Users/zz/GolandProjects/tools/codeonline/" // 本机测试
+	//TempFilePath = "/root/"	// 部署路径
+	TempFilePath = "/Users/zz/" // 本机测试
 )
 
 // 镜像名
 const (
 	ImageGo   = "golang"
 	ImageJava = "java"
+	ImageC    = "gcc"
+	ImageCPP  = "gcc"
 )
 
 // 后缀名
 const (
 	SuffixGo   = ".go"
 	SuffixJava = ".java"
+	SuffixC    = ".c"
+	SuffixCPP  = ".cc"
 )

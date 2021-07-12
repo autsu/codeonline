@@ -24,7 +24,10 @@ func Timeout(user *User, f RunFunc) (result []byte, err error) {
 		// 解决方法：每次运行代码都会创建一个容器，执行完成或者超时
 		// 则将该容器强制删除即可，进程结束泄露的 goroutine 自然
 		// 也一起结束了
-		res, _ := f(user)
+		res, e := f(user)
+		if e != nil {
+			err = e
+		}
 		log.Println("执行完成")
 		done <- struct{}{}
 		result = res
