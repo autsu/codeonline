@@ -1,0 +1,77 @@
+2021/08/11 12:22:50 handler.go:20: 223.11.5.138:2022
+2021/08/11 12:22:50 handler.go:27: limiter allow
+2021/08/11 12:22:50 handler.go:41: [go] a client[223.11.5.138:2022][OPTIONS] in...
+2021/08/11 12:22:50 user.go:37: unexpected end of JSON input
+2021/08/11 12:22:50 handler.go:44: start error:  unexpected end of JSON input
+2021/08/11 12:22:50 handler.go:20: 223.11.5.138:2022
+2021/08/11 12:22:50 handler.go:27: limiter allow
+2021/08/11 12:22:50 handler.go:41: [go] a client[223.11.5.138:2022][POST] in...
+2021/08/11 12:22:50 docker_exec.go:156: docker exec command:  docker run -d -it --name 531 gcc
+2021/08/11 12:22:50 docker_exec.go:162: docker exec result:  59be5a09debab686c29b4e6e74da2405b3d9eab5794ccc7d82aa7135e2612dc5
+
+2021/08/11 12:22:50 docker_exec.go:156: docker exec command:  docker exec -i 531 sh -c "cd .. && mkdir code"
+2021/08/11 12:22:50 docker_exec.go:162: docker exec result:  
+2021/08/11 12:22:50 handler.go:108: user code:  
+#include <stdio.h>
+
+int main() {
+    printf("hello, world!");
+}
+        
+2021/08/11 12:22:50 io.go:17: temp file write path:  /root/test.c
+2021/08/11 12:22:50 docker_exec.go:156: docker exec command:  docker cp /root/test.c 531:/code/
+2021/08/11 12:22:50 docker_exec.go:162: docker exec result:  
+2021/08/11 12:22:50 handler.go:117: rm temp file
+2021/08/11 12:22:50 docker_exec.go:156: docker exec command:  docker exec -i 531 sh -c "cd ../code && gcc -o test test.c && ./test"
+2021/08/11 12:22:51 docker_exec.go:162: docker exec result:  hello, world!
+2021/08/11 12:22:51 timeout.go:31: 执行完成
+2021/08/11 12:22:51 handler.go:95: run code result:  hello, world!
+2021/08/11 12:22:51 docker_exec.go:156: docker exec command:  docker rm -f 531
+2021/08/11 12:22:51 docker_exec.go:162: docker exec result:  531
+
+2021/08/11 12:24:21 handler.go:20: 223.11.5.138:2022
+2021/08/11 12:24:21 handler.go:27: limiter allow
+2021/08/11 12:24:21 handler.go:41: [go] a client[223.11.5.138:2022][OPTIONS] in...
+2021/08/11 12:24:21 user.go:37: unexpected end of JSON input
+2021/08/11 12:24:21 handler.go:44: start error:  unexpected end of JSON input
+2021/08/11 12:24:21 handler.go:20: 223.11.5.138:2022
+2021/08/11 12:24:21 handler.go:27: limiter allow
+2021/08/11 12:24:21 handler.go:41: [go] a client[223.11.5.138:2022][POST] in...
+2021/08/11 12:24:21 docker_exec.go:156: docker exec command:  docker run -d -it --name 948 gcc
+2021/08/11 12:24:21 docker_exec.go:162: docker exec result:  eeb6df9ee30063becef2302c3db182cbcdf7af012c86ceb49d156c61a992c4c7
+
+2021/08/11 12:24:21 docker_exec.go:156: docker exec command:  docker exec -i 948 sh -c "cd .. && mkdir code"
+2021/08/11 12:24:22 docker_exec.go:162: docker exec result:  
+2021/08/11 12:24:22 handler.go:108: user code:  
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<int> vec;
+    vec.emplace_back(1);
+    vec.emplace_back(2);
+    
+    for (auto v : vec) {
+      cout << v << "";
+    }
+    cout << endl;
+    cout << "hello, world!" << endl;
+}
+        
+2021/08/11 12:24:22 io.go:17: temp file write path:  /root/test.cc
+2021/08/11 12:24:22 docker_exec.go:156: docker exec command:  docker cp /root/test.cc 948:/code/
+2021/08/11 12:24:22 docker_exec.go:162: docker exec result:  
+2021/08/11 12:24:22 handler.go:117: rm temp file
+2021/08/11 12:24:22 docker_exec.go:156: docker exec command:  docker exec -i 948 sh -c "cd ../code && g++ -o test test.cc && ./test"
+2021/08/11 12:24:22 docker_exec.go:162: docker exec result:  12
+hello, world!
+
+2021/08/11 12:24:22 timeout.go:31: 执行完成
+2021/08/11 12:24:22 handler.go:95: run code result:  12
+hello, world!
+
+2021/08/11 12:24:22 docker_exec.go:156: docker exec command:  docker rm -f 948
+2021/08/11 12:24:23 docker_exec.go:162: docker exec result:  948
+

@@ -156,7 +156,7 @@ func dockerExec(user *User, cmd string) ([]byte, error) {
 	log.Println("docker exec command: ", cmd)
 	output, err := c.CombinedOutput()
 	if err != nil {
-		log.Printf("\"docker exec [ \" + cmd + \" ] error: %v\n", err)
+		log.Printf("docker exec [ " + cmd + " ] error: %v\n", err)
 		return nil, errors.New(string(output))
 	}
 	log.Println("docker exec result: ", string(output))

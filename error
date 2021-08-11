@@ -1,0 +1,4 @@
+Dockerfile 运行后报错:
+docker exec [ docker run -d -it --name 2963 golang ] error: exec: "bash": executable file not found in $PATH
+
+但是使用 go build 正常

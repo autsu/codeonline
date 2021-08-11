@@ -27,7 +27,7 @@ func main() {
 	mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
 
 	// 用 LimitMiddleware() 包裹 mux 实现限流
-	if err := http.ListenAndServe(":7776", LimitMiddleware(mux)); err != nil {
+	if err := http.ListenAndServe(":10001", LimitMiddleware(mux)); err != nil {
 		log.Println("start server error: ", err)
 		return
 	}

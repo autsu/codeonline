@@ -14,8 +14,8 @@ const (
 
 	// TempFilePath store the temp file, when copy to container finish, this file will be remove
 
-	//TempFilePath = "/root/"	// 部署路径
-	TempFilePath = "/Users/zz/" // 本机测试
+	TempFilePath = "/root/"	// 部署路径
+	//TempFilePath = "/Users/zz/" // 本机测试
 )
 
 // 镜像名
